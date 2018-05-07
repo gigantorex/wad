@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+    <title>Add Course</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="center">
+
+                <form action="/addcourse" method="POST" class="form-group">
+
+                    <label for="course_id">Course Id</label>
+                    <input type="text" name="course_id" id="course_id" class="form-control">
+
+                    <label for="course_title">Course Title</label>
+                    <input type="text" name="course_title" id="course_title" class="form-control">
+
+                    <!--
+        <select id="course_id" name="course_id" required>
+            <option value="">Choose Course ID:</option>
+            <option value="morning">morning</option>
+            <option value="evening">evening</option>
+            <option value="weekend">weekend</option>
+         </select> -->
+                    <input type="submit" value="insert" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+</html>

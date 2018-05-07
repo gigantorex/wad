@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./jquery.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+    <title>Add Student</title>
+    <script>
+        $(document).ready(function() {
+            $.getJSON("/courses", function(result) {
+
+                var html = '';
+                var option = $("#course_id");
+                for (var index = 0; index < result.length; index++) {
+                    var eachV = result[index];
+                    console.log(eachV.course_id);
+                    html += '<option value="' + eachV.course_id + '">' + eachV.course_title + '</option>'
+
+
+                }
+
+                option.append(html);
+
+
+            });
+
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="center">
+
+                <form action="/addstudent" method="POST" class="form-group">
+                    <label for="ID">ID</label>
+                    <input type="text" name="student_id" id="student_id" class="form-control">
+                    <label for="first_name">first_name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control">
+                    <label for="last_name">last_name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control">
+                    <label for="email">email</label>
+                    <input type="text" name="email" id="email" class="form-control">
+                    <label for="program">program</label>
+                    <input type="text" name="program" id="program" class="form-control">
+                    <label for="course_id">course_id</label>
+                    <select id="course_id" name="course_id" required>
+            <option value="">Choose Course ID:</option>
+         
+         </select>
+                    <input type="submit" value="insert" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+</html>

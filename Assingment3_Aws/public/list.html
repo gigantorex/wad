@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+            align-self: center;
+        }
+        
+        td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 2px;
+        }
+        
+        th {
+            font-size: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+
+
+
+            var html = '';
+            var table = $("#mytable");
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:3000/students',
+                datatype: 'json'
+            }).done(function(data) {
+                //console.log('Here is data Bro');
+                //  console.log(data);
+                // html += '<tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Program</th><th>Registered Courses ID</th></tr>';
+                for (var index = 0; index < data.length; index++) {
+                    var eachV = data[index];
+                    html += '<tr>';
+                    html += '<td>' + eachV.student_id + '<td/>';
+                    html += '<td>' + eachV.first_name + '<td/>';
+                    html += '<td>' + eachV.last_name + '<td/>';
+                    html += '<td>' + eachV.email + '<td/>';
+                    html += '<td>' + eachV.program + '<td/>';
+                    html += '<td>' + eachV.course_id + '<td/>';
+                    html += '<td><a href="/edit.html?id=' + eachV._id + '">Edit</a><td/>';
+
+                    html += '<td><a href="/edit.html?id=' + eachV._id + '">Delete</a><td/>';
+
+
+
+                    html += '</tr>';
+
+                }
+                table.append(html);
+
+            })
+
+            $("#delete").click(function() {
+
+                alert('G khair');
+            })
+
+
+        })
+    </script>
+    <title>List Student</title>
+</head>
+
+<body>
+    <table id="mytable"></table>
+</body>
+
+
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+    <script src="jquery-3.3.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var html = '';
+            var table = $("#mytable");
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:3000/courses',
+                datatype: 'json'
+            }).done(function(data) {
+                //console.log('Here is data Bro');
+                //  console.log(data);
+                for (var index = 0; index < data.length; index++) {
+                    var eachV = data[index];
+                    html += '<tr>';
+                    html += '<td>' + eachV.course_id + '<td/>';
+                    html += '<td>' + eachV.course_title + '<td/>';
+
+                    html += '<td><a href="/course/edit.html?id=' + eachV._id + '">Edit</a><td/>';
+
+                    html += '<td><a href="/course/edit.html?id=' + eachV._id + '">Delete</a><td/>';
+
+
+                    html += '</tr>';
+
+                }
+                table.append(html);
+
+
+
+            })
+
+
+
+
+        })
+    </script>
+    <title>List Courses</title>
+</head>
+
+<body>
+    <table id="mytable"></table>
+</body>
+
+</html>

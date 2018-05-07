@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="purl_2.3.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            var url = $.url(window.location);
+            var id = url.param('id');
+            //    console.log(id);
+            $.ajax({
+                url: '/editcourse/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(resp) {
+
+                    //  console.log(resp._id);
+                    if (resp) {
+                        $("#course_id").val(resp.course_id);
+
+                        $("#course_title").val(resp.course_title);
+
+                    }
+                }
+            });
+
+            $("#delete").click(function() {
+
+                $.ajax({
+                    url: '/deletecourse/' + id,
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        id: id
+                    },
+                    success: function() {
+                        console.log('Deleted');
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                })
+            })
+            $("#submit").click(function() {
+
+                alert('Iam here');
+                console.log("Whyyyyyyyyyyyyyyyyyy");
+                var course_id = $("#course_id").val();
+                var course_title = $("#course_title").val();
+
+                $.ajax({
+                    url: '/updatecourse/' + id,
+                    type: 'post',
+                    dataType: 'json',
+
+                    data: {
+                        course_title: course_title,
+
+                        course_id: course_id
+
+                    },
+                    success: function(resp) {
+                        console.log('Updated', resp);
+                        window.location.href = '/list.html'
+                    },
+                    error: function(err) {
+
+                        console.log(err);
+                    }
+
+                });
+
+            });
+
+
+
+        });
+    </script>
+    <title>Update Student</title>
+
+</head>
+
+<body>
+    <form class="form-group">
+        <label for="course_id">Course Id</label>
+        <input type="text" name="course_id" id="course_id" class="form-control">
+
+        <label for="course_title">Course Title</label>
+        <input type="text" name="course_title" id="course_title" class="form-control">
+
+        <!--
+        <select id="course_id" name="course_id" required>
+            <option value="">Choose Course ID:</option>
+            <option value="morning">morning</option>
+            <option value="evening">evening</option>
+            <option value="weekend">weekend</option>
+            class="btn btn-primary"
+         </select> -->
+        <button type="button" id="submit">Update</button>
+
+        <button type="button" id="delete">Delete</button>
+
+    </form>
+</body>
+
+
+
+</html>
