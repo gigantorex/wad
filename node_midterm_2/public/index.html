@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<script src="jquery-3.3.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    $("#submit").click(function () {
+      var gender = '';
+      if ($("#gender_male").is(":checked")) {
+        gender = 'male';
+      } else {
+        gender = 'female';
+      };
+
+      $.ajax({
+        url: '/addStudents',
+        data: {
+          student_id: $("#student_id").val(),
+          first_name: $("#first_name").val(),
+          last_name: $("#last_name").val(),
+          dob: $("#dob").val(),
+          address: $("#address").val(),
+          semester: $("#semester").val(),
+          gender: gender
+        },
+        type:'POST',
+        success: function (resp) {
+          console.log(resp);
+          if ( resp && resp.data ) {
+            var student = resp.data;
+
+            var html = '';        
+            html += '<tr>';
+            html += '<td>' + student.student_id + '</td>';
+            html += '<td>' + student.first_name + ' ' + student.last_name + '</td>';
+            html += '<td>' + student.dob + '</td>';
+            html += '<td>' + student.address + '</td>';
+            html += '<td><a href="/edit.html?student_id='+student._id+'">Edit</a></td>';
+            html += '</tr>';
+
+            $("#table").append(html);
+          }
+        },
+        error: function (err) {
+          console.log('ERR', err);
+        }
+      });
+    });
+
+    $.ajax({
+      url:'/getStudents',
+      type:'GET',
+      dataType:'json',
+      success: function (resp) {
+        if ( resp && resp.data ) {
+          var students = resp.data;
+          var html = '';        
+          for (var i = 0; i < students.length; i++ ) {
+            var student = students[i];
+            html += '<tr>';
+            html += '<td>' + student.student_id + '</td>';
+            html += '<td>' + student.first_name + ' ' + student.last_name + '</td>';
+            html += '<td>' + student.dob + '</td>';
+            html += '<td>' + student.address + '</td>';
+            html += '<td><a href="/edit.html?student_id='+student._id+'">Edit</a></td>';
+            html += '</tr>';
+           }
+
+           $("#table").append(html);
+        }
+        
+
+      }
+    })
+
+  })
+</script>
+</head>
+<body>
+
+<h1>Add Student</h1>
+
+<form>
+  Student ID:
+  <input type="text" id="student_id" name="student_id"> 
+  <br>
+  First Name:
+  <input type="text" id="first_name" name="first_name"> 
+  <br>
+  Last Name:
+  <input type="text" id="last_name" name="last_name"> 
+  <br>
+  Date of Birth:
+  <input type="text" id="dob" name="dob"> 
+  <br>
+  Address:
+  <input type="text" id="address" name="address"> 
+  <br>
+
+  Gender:
+  <br />
+  Male: <input type="radio" id="gender_male" name="gender">
+  Female: <input type="radio" id="gender_female" name="gender"> 
+  <br>
+
+  Semester:
+  <select name="semester" id="semester">
+    <option value>Select</option>
+    <option value="spring">Spring</option>
+    <option value="fall">Fall</option>
+    <option value="summer">Summer</option>
+  </select>
+  <br>
+
+
+  <button type="button" id="submit">Submit</button>
+</form>
+
+<h1>Students</h1>
+
+<div id="students">
+  <table id="table">
+    
+    <tr>
+      <th>Student ID</th>
+      <th>Name</th>
+      <th>Date of Birth</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+
+  </table>
+</div>
+</body>
+</html>

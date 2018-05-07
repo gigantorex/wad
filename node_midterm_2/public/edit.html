@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<script src="jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.js"></script>
+
+<script>
+  $(document).ready(function () {
+    var url = $.url(window.location);
+    var student_id = url.param('student_id');
+
+    $.ajax({
+      url:'/getStudent/' + student_id,
+      type:'GET',
+      dataType:'json',
+      success: function (resp) {
+        if ( resp && resp.data ) {
+          var student = resp.data;
+          $("#student_id").val(student.student_id);
+          $("#first_name").val(student.first_name);
+          $("#last_name").val(student.last_name);
+          $("#dob").val(student.dob);
+          $("#address").val(student.address);
+          $("#semester").val(student.semester);
+
+          if (student.gender == 'male') {
+            $("#gender_male").prop("checked", true);
+            $("#gender_female").prop("checked", false);
+          } else {
+            $("#gender_male").prop("checked", false);
+            $("#gender_female").prop("checked", true);
+          }
+
+        }
+        
+      }
+    });
+
+    $("#submit").click(function () {
+      var gender = '';
+      if ($("#gender_male").is(":checked")) {
+        gender = 'male';
+      } else {
+        gender = 'female';
+      }
+      $.ajax({
+        url: '/editStudent/' + student_id,
+        data: {
+          student_id: $("#student_id").val(),
+          first_name: $("#first_name").val(),
+          last_name: $("#last_name").val(),
+          dob: $("#dob").val(),
+          address: $("#address").val(),
+          semester: $("#semester").val(),
+          gender: gender
+        },
+        type:'POST',
+        success: function (resp) {
+          console.log('Succ', resp);
+        },
+        error: function (err) {
+          console.log('ERR', err);
+        }
+      })
+    });
+
+  })
+</script>
+</head>
+<body>
+<h1>Edit Student</h1>
+<form>
+  Student ID:
+  <input type="text" id="student_id" name="student_id"> 
+  <br>
+  First Name:
+  <input type="text" id="first_name" name="first_name"> 
+  <br>
+  Last Name:
+  <input type="text" id="last_name" name="last_name"> 
+  <br>
+  Date of Birth:
+  <input type="text" id="dob" name="dob"> 
+  <br>
+  Address:
+  <input type="text" id="address" name="address"> 
+  <br>
+
+  Gender:
+  <br />
+  Male: <input type="radio" id="gender_male" name="gender">
+  Female: <input type="radio" id="gender_female" name="gender"> 
+  <br>
+
+  Semester:
+  <select name="semester" id="semester">
+    <option value>Select</option>
+    <option value="spring">Spring</option>
+    <option value="fall">Fall</option>
+    <option value="summer">Summer</option>
+  </select>
+  <br>
+
+
+  <button type="button" id="submit">Submit</button>
+</form>
+</body>
+</html>
